@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Barang;
-use App\Http\Resources\BarangResource;
+use App\Satuan;
+use App\Http\Resources\SatuanResource;
+use Illuminate\Support\Str;
 
-
-class BarangController extends Controller
+class SatuanController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,19 +17,10 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $brand = Barang::with(['categories', 'brands', 'satuans'])->paginate(15);
-        return BarangResource::collection($brand);
+        $satuan = Satuan::paginate(15);
+        return SatuanResource::collection($satuan);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -39,7 +30,11 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $satuan = new Satuan;
+        $satuan->satuan_name = $request->get('name');
+        $satuan->slug =  Str::slug($request->get('name'), '-');
+        $satuan->save();
+        if($satuan) return new SatuanResource($satuan);
     }
 
     /**
@@ -50,18 +45,8 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $satuan = Satuan::findOrFail($id);
+        if($satuan) return new SatuanResource($satuan);
     }
 
     /**
@@ -73,7 +58,11 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $satuan = Satuan::findOrFail($id);
+        $satuan->satuan_name = $request->get('name');
+        $satuan->slug = Str::slug($request->get('name'), '-');
+        
+        if($satuan->save()) return new SatuanResource($satuan);
     }
 
     /**
@@ -84,6 +73,8 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $brand = Satuan::findOrFail($id);
+        
+        if($brand->delete()) return new SatuanResource($brand);
     }
 }

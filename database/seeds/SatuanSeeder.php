@@ -11,9 +11,10 @@ class SatuanSeeder extends Seeder
      */
     public function run()
     {
-        $brand = new \App\Satuan;
-        $brand->satuan_name = "kg";
-        $brand->slug = "kg";
-        $brand->save();
+        // $brand = new \App\Satuan;
+        // $brand->satuan_name = "kg";
+        // $brand->slug = "kg";
+        // $brand->save();
+        factory(App\Satuan::class, 5)->create();
     }
 }

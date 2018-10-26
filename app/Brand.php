@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
-    public function brands()
+
+    protected $fillable = ['brand_name'];
+
+    public function barang()
     {
         return $this->hasMany('App\Barang');
     }

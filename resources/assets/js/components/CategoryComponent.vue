@@ -58,16 +58,7 @@ export default {
             category_name : '',
             errors : [],
             action : false,
-            category :[
-                {
-                    "id":1,
-                    "name" : "example"
-                },
-                {
-                    "id":2,
-                    "name" : "example2"
-                },
-            ],
+            category :[],
             paging : {},
             items : {}
         }
@@ -96,9 +87,9 @@ export default {
         async fetchCategory(base_url) {
            try{
                const category = await axios.get('/category');
-               console.log(category.data.data)
                return this.category = category.data
            } catch(error){
+                console.log(error)
            }
         },
 
@@ -142,7 +133,6 @@ export default {
             let edit = this.category.indexOf(items)
             this.category_name = items.category_name
             this.items = items
-            console.log(this.items)
         },
 
         async destroy(items){

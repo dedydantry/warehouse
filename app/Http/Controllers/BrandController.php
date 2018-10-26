@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Barang;
-use App\Http\Resources\BarangResource;
+use App\Brand;
+use App\Http\Resources\BrandResource;
+use Illuminate\Support\Str;
 
-
-class BarangController extends Controller
+class BrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,18 +17,8 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $brand = Barang::with(['categories', 'brands', 'satuans'])->paginate(15);
-        return BarangResource::collection($brand);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $brand = Brand::paginate(15);
+        return BrandResource::collection($brand);
     }
 
     /**
@@ -39,7 +29,10 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $brand = new Brand;
+        $brand->brand_name = $request->get('name');
+        $brand->slug =  Str::slug($request->get('name'), '-');
+        if($brand->save()) return new BrandResource($brand);
     }
 
     /**
@@ -50,19 +43,10 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        //
+        $brand = Brand::findOrFail($id);
+        return new BrandResource($brand);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -73,7 +57,11 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $brand = Brand::findOrFail($id);
+        $brand->brand_name = $request->get('name');
+        $brand->slug = Str::slug($request->get('name'), '-');
+
+        if($brand->save()) return new BrandResource($brand);
     }
 
     /**
@@ -84,6 +72,8 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        //
-    }
+        $brand = Brand::findOrFail($id);
+        
+        if($brand->delete()) return new BrandResource($brand);
+    }   
 }

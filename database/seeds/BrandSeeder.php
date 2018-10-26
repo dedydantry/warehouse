@@ -11,9 +11,10 @@ class BrandSeeder extends Seeder
      */
     public function run()
     {
-        $brand = new \App\Brand;
-        $brand->brand_name = "XYZ";
-        $brand->slug = "xyz";
-        $brand->save();
+        // $brand = new \App\Brand;
+        // $brand->brand_name = "XYZ";
+        // $brand->slug = "xyz";
+        // $brand->save();
+        factory(App\Brand::class, 10)->create();
     }
 }

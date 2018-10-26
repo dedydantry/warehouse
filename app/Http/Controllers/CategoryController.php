@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Category;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -13,17 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-       echo 'hello';
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+       $category = Category::all();
+       return response()->json($category);
     }
 
     /**
@@ -34,7 +27,11 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newcategory = new \App\Category;
+        $newcategory->category_name = $request->get('name');
+        $newcategory->slug = Str::slug($request->get('name'), '-');
+        $newcategory->save();
+        return response()->json($newcategory);
     }
 
     /**
@@ -68,7 +65,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->category_name = $request->get('name');
+        $category->slug = Str::slug($request->get('name'), '-');
+        $category->save();
+        return response()->json($category);
     }
 
     /**
@@ -79,6 +80,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->delete();
+        return json_encode(['status' => 'success']);
     }
 }

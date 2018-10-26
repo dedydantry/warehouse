@@ -11,9 +11,10 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        $category = new \App\Category;
-        $category->category_name = "Tangga";
-        $category->slug = "tangga";
-        $category->save();
+        // $category = new \App\Category;
+        // $category->category_name = "Tangga";
+        // $category->slug = "tangga";
+        // $category->save();
+        factory(App\Category::class, 30)->create();
     }
 }
