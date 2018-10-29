@@ -28,7 +28,13 @@ class BarangController extends Controller
      */
     public function create()
     {
-        //
+        $data =[
+            "category" => \App\Category::all(),
+            "brand" => \App\Brand::all(),
+            "satuan" => \App\Satuan::all()
+        ];
+
+        return response()->json($data);
     }
 
     /**
@@ -39,7 +45,17 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $barang = new Barang;
+        $barang->part_number = $request->get('part_number');
+        $barang->description = $request->get('description'); 
+        $barang->category_id = $request->get('category_id'); 
+        $barang->brand_id = $request->get('brand_id'); 
+        $barang->satuan_id = $request->get('satuan_id');
+        $barang->price = $request->get('price');
+        $barang->cover = $request->get('cover');
+        $barang->stok = $request->get('stok');
+        $barang->save();
+        if($barang) return new BarangResource($barang);
     }
 
     /**
@@ -50,7 +66,8 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        //
+        $barang = Barang::findOrFail($id);
+        if($barang) return new BarangResource($barang);
     }
 
     /**
@@ -61,7 +78,9 @@ class BarangController extends Controller
      */
     public function edit($id)
     {
-        //
+        $barang = Barang::findOrFail($id);
+        if($barang) return new BarangResource($barang);
+
     }
 
     /**
@@ -73,7 +92,17 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $barang = Barang::findOrFail($id);
+        $barang->part_number = $request->get('part_number');
+        $barang->description = $request->get('description'); 
+        $barang->category_id = $request->get('category_id'); 
+        $barang->brand_id = $request->get('brand_id'); 
+        $barang->satuan_id = $request->get('satuan_id');
+        $barang->price = $request->get('price');
+        $barang->cover = $request->get('cover');
+        $barang->stok = $request->get('stok');
+        
+        if($barang->save()) return new BarangResource($barang);
     }
 
     /**
@@ -84,6 +113,8 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $barang = Barang::findOrFail($id);
+        
+        if($barang->delete()) return new BarangResource($barang);
     }
 }

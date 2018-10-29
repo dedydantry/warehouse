@@ -18,7 +18,7 @@
                         </form>
                         <div class="card">
                             <div class="card-header">
-                                <strong class="card-title">Category</strong>
+                                <strong class="card-title">Satuan</strong>
                             </div>
                             <div class="card-body">
                                 <table class="table">

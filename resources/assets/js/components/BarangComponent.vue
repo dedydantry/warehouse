@@ -8,6 +8,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <strong class="card-title">Barang</strong>
+                                <router-link to="/barang/create" class="btn btn-outline-primary float-sm-right"><i class="fa fa-plus"></i> New</router-link>
                             </div>
                             <div class="card-body">
                                 <table class="table">
@@ -19,6 +20,7 @@
                                             <th scope="col">Category</th>
                                             <th scope="col">Brand</th>
                                             <th scope="col">Stn</th>
+                                            <th scope="col">Stok</th>
                                             <th scope="col">Price</th>
                                             <th scope="col"></th>
                                         </tr>
@@ -31,8 +33,12 @@
                                             <td>{{ barangs.categories.category_name }}</td>
                                             <td>{{ barangs.brands.brand_name }}</td>
                                             <td>{{ barangs.satuans.satuan_name }}</td>
+                                            <td>{{ barangs.stok }}</td>
                                             <td>{{ 'Rp '+ barangs.price }}</td>
-                                            <td></td>
+                                            <td>
+                                                <button class="btn btn-outline-primary btn-sm" v-on:click="edit(barangs)"><i class="fa fa-pencil"></i></button>
+                                                <button class="btn btn-outline-danger btn-sm" v-on:click="destroy(barangs)"><i class="fa fa-trash"></i></button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -70,6 +76,22 @@ export default {
                 this.barang = barang.data.data
             } catch (error) {
                 console.log(error)
+            }
+        },
+
+        async edit(items){
+            return this.$router.push('barang/edit/'+items.id) ;
+        },
+
+        async destroy(items){   
+            if(confirm('Delete data ini ?')){
+                let result = this.barang.indexOf(items)
+                try {
+                    let destroy = await axios.delete('/api/barang/'+items.id);
+                    this.$delete(this.barang, result)
+                } catch (error) {
+                    console.log(error)
+                }
             }
         }
     }
