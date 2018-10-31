@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="clearfix">    
         <breadcrumbs title="Category"></breadcrumbs>
         <div class="content">
             <div class="animate fade-in">
@@ -87,7 +87,7 @@ export default {
         async fetchCategory(base_url) {
            try{
                const category = await axios.get('/category');
-               return this.category = category.data
+               return this.category = category.data.data
            } catch(error){
                 console.log(error)
            }

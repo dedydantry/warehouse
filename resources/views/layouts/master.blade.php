@@ -35,11 +35,6 @@
     <!-- Left Panel -->
         @include('layouts.sidebar')
     <!-- /#left-panel -->
-
-    <!-- Left Panel -->
-
-    <!-- Right Panel -->
-
         <div id="right-panel" class="right-panel">
 
             <!-- Header-->
@@ -144,35 +139,26 @@
                         </div> 
                     </div>  
                 </div>
-            </header><!-- /header -->
+            </header>
             <!-- Header-->
-
             
-
-            {{-- @yield('content') --}}
-            
-                <router-view></router-view>
-            
-
-        <div class="clearfix"></div>
-
-        <footer class="site-footer">
-            <div class="footer-inner bg-white">
-                <div class="row">
-                    <div class="col-sm-6">
-                        Copyright &copy; 2018 Ela Admin
-                    </div>
-                    <div class="col-sm-6 text-right">
-                        Designed by <a href="https://colorlib.com">Colorlib</a>
+            <router-view></router-view>
+            <div class="clearfix"></div>
+            <footer class="site-footer">
+                <div class="footer-inner bg-white">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            Copyright &copy; 2018 Ela Admin
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            Designed by <a href="https://colorlib.com">Colorlib</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </footer>
-
-</div><!-- /#right-panel -->
-
-<!-- Right Panel -->
-</div> <!-- #app -->
+            </footer>
+        
+        </div><!-- /#right-panel -->
+    </div> 
 
 
 <script src="{{ url('template') }}/assets/js/vendor/jquery-2.1.4.min.js"></script>

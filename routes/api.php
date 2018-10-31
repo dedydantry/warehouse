@@ -35,3 +35,9 @@ Route::post('barang', 'BarangController@store');
 Route::delete('barang/{id}', 'BarangController@destroy');
 Route::get('barang/{id}', 'BarangController@show');
 Route::put('barang/{id}', 'BarangController@update');
+
+Route::get('transaction', 'TransactionController@index');
+Route::post('transaction', 'TransactionController@store');
+Route::get('transaction/show/{id}', 'TransactionController@show');
+
+Route::get('order', 'OrderController@index');

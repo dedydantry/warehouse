@@ -5,6 +5,9 @@ import Brand from './components/BrandComponent.vue';
 import Satuan from './components/SatuanComponent.vue';
 import Barang from './components/BarangComponent.vue';
 import NewBarang from './components/BarangNewComponent.vue';
+import Transaction from './components/TransactionComponent.vue';
+import FormTransaction from './components/TransactionFormComponent.vue';
+import OrderTransaction from './components/OrderTransactionComponent.vue';
 
 export const routes = [
     { path : '/', component:Home, name:'home'},
@@ -13,5 +16,9 @@ export const routes = [
     { path : '/satuan', component:Satuan, name:'satuan'},
     { path : '/barang', component:Barang, name:'barang'},
     { path : '/barang/create', component:NewBarang, name:'newbarang'},
-    { path : '/barang/edit/:id', component:NewBarang, name:'editbarang'}
+    { path : '/barang/edit/:id', component:NewBarang, name:'editbarang'},
+    { path : '/transaction/:status', component:Transaction, name:'transaction'},
+    { path : '/transaction/create/:status', component:FormTransaction, name:'transactionForm'},
+    { path : '/transaction/edit/:id', component:FormTransaction, name:'transactionEdit'},
+    { path : '/transaction/order/:id', component:OrderTransaction, name:'transactionOrder'}
 ]

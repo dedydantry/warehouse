@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="clearfix">
         <breadcrumbs title="Barang"></breadcrumbs>
         <div class="content">
             <div class="animate fade-in">
@@ -30,9 +30,9 @@
                                             <td>{{ index+1 }}</td>
                                             <td>{{ barangs.part_number }}</td>
                                             <td>{{ barangs.description }}</td>
-                                            <td>{{ barangs.categories.category_name }}</td>
-                                            <td>{{ barangs.brands.brand_name }}</td>
-                                            <td>{{ barangs.satuans.satuan_name }}</td>
+                                            <td>{{ barangs.category.category_name }}</td>
+                                            <td>{{ barangs.brand.brand_name }}</td>
+                                            <td>{{ barangs.satuan.satuan_name }}</td>
                                             <td>{{ barangs.stok }}</td>
                                             <td>{{ 'Rp '+ barangs.price }}</td>
                                             <td>
@@ -74,6 +74,7 @@ export default {
             try {
                 let barang = await axios.get('/api/barang');
                 this.barang = barang.data.data
+                console.log(this.barang)
             } catch (error) {
                 console.log(error)
             }

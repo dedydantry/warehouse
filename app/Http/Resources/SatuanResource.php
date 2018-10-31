@@ -18,7 +18,6 @@ class SatuanResource extends Resource
         return [
             'id' => $this->id,
             'satuan_name' => $this->satuan_name,
-            'slug' => $this->slug 
         ];
     }
 }

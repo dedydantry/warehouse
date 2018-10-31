@@ -28,10 +28,10 @@
                 </li>
                 
                 <li>
-                    <a href="widgets.html"> <i class="menu-icon fa fa-suitcase"></i>In </a>
+                    <router-link to="/transaction/in"><i class="menu-icon fa fa-suitcase"></i>In</router-link>
                 </li>
                 <li>
-                    <a href="widgets.html"> <i class="menu-icon fa fa-suitcase"></i>Out </a>
+                    <router-link to="/transaction/out"><i class="menu-icon fa fa-suitcase"></i>Out</router-link>
                 </li>
                 <li class="menu-title">Laporan</li><!-- /.menu-title -->
                 <li>

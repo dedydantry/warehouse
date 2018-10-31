@@ -15,17 +15,20 @@ class BarangResource extends Resource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
-        // return [
-        //     'id' => $this->id,
-        //     'part_number' => $this->part_number, 
-        //     'description' => $this->description, 
-        //     'category_id' => $this->category_id, 
-        //     'brand_id' => $this->brand_id, 
-        //     'satuan_id' => $this->satuan_id,
-        //     'price' => $this->price,
-        //     'cover' => $this->cover,
-        //     'stok' => $this->stok
-        // ];
+        // return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'part_number' => $this->part_number, 
+            'description' => $this->description, 
+            'price' => $this->price,
+            'cover' => $this->cover,
+            'stok' => $this->stok,
+            'category_id' => $this->category_id, 
+            'brand_id' => $this->brand_id, 
+            'satuan_id' => $this->satuan_id,
+            'category' => new CategoryResource($this->whenLoaded('categories')), 
+            'brand' => new BrandResource($this->whenLoaded('brands')), 
+            'satuan' => new SatuanResource($this->satuans)
+        ];
     }
 }

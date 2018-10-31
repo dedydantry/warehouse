@@ -4,23 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Order;
+use App\Transaction;
+use App\Http\Resources\OrderResource;
 
-use App\Category;
-use Illuminate\Support\Str;
-use App\Http\Resources\CategoryResource;
 
-
-class CategoryController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-       $category = Category::paginate(15);
-       return CategoryResource::collection($category);
+        $order = Order::with(['transaction', 'barang'])->where('transaction_id', $request->get('transaction'))->get();
+        return OrderResource::collection($order);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**
@@ -31,11 +40,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $newcategory = new \App\Category;
-        $newcategory->category_name = $request->get('name');
-        $newcategory->slug = Str::slug($request->get('name'), '-');
-        $newcategory->save();
-        return response()->json($newcategory);
+        //
     }
 
     /**
@@ -69,11 +74,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::findOrFail($id);
-        $category->category_name = $request->get('name');
-        $category->slug = Str::slug($request->get('name'), '-');
-        $category->save();
-        return response()->json($category);
+        //
     }
 
     /**
@@ -84,8 +85,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        $category->delete();
-        return json_encode(['status' => 'success']);
+        //
     }
 }

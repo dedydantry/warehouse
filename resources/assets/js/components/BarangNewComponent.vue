@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="clearfix">
         <breadcrumbs title="Barang"></breadcrumbs>
         <div class="content">
             <div class="animate fade-in">
@@ -15,49 +15,49 @@
                                     <div class="form-group">
                                         <label for="part_number" class=" form-control-label">Part :</label>
                                         <input type="text" name="part_number" v-model="part_number" :class="[invalidPart && attemptSubmit ? 'is-invalid form-control' : 'form-control']">
-                                        <span v-if="attemptSubmit && invalidPart" class="help-block">{{ errors.part_number }}</span>
+                                        <span v-if="attemptSubmit && invalidPart" class="invalid-feedback">{{ errors.part_number }}</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="description" class=" form-control-label">Desc :</label>
                                         <input type="text" v-model="description" name="description" :class="[invalidDesc && attemptSubmit ? 'is-invalid form-control' : 'form-control']">
-                                        <span v-if="attemptSubmit && invalidDesc" class="help-block">{{ errors.description }}</span>
+                                        <span v-if="attemptSubmit && invalidDesc" class="invalid-feedback">{{ errors.description }}</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="select_category" class=" form-control-label">Category :</label>
                                         <select name="select_category" v-model="select_category" :class="[invalidCategory && attemptSubmit ? 'is-invalid form-control' : 'form-control']">
-                                            <option value="">...</option>
+                                            <option value="" disabled>...</option>
                                             <option v-for="(categories, index) in category" :value="categories.id" :key="index">{{ categories.category_name }}</option>
                                         </select>
-                                        <span v-if="attemptSubmit && invalidCategory" class="help-block">{{ errors.category }}</span>
+                                        <span v-if="attemptSubmit && invalidCategory" class="invalid-feedback">{{ errors.category }}</span>
 
                                     </div>
                                     <div class="form-group">
                                         <label for="select_brand" class=" form-control-label">Brand :</label>
                                         <select name="select_brand" v-model="select_brand" :class="[invalidBrand && attemptSubmit ? 'is-invalid form-control' : 'form-control']">
-                                            <option value="">...</option>
+                                            <option value="" disabled>...</option>
                                             <option v-for="(brands, index) in brand" :value="brands.id" :key="index">{{ brands.brand_name }}</option>
                                         </select>
-                                        <span v-if="attemptSubmit && invalidBrand" class="help-block">{{ errors.brand }}</span>
+                                        <span v-if="attemptSubmit && invalidBrand" class="invalid-feedback">{{ errors.brand }}</span>
 
                                     </div>
                                     <div class="form-group">
                                         <label for="select_satuan" class="form-control-label">Satuan :</label>
                                             <select name="select_satuan" v-model="select_satuan" :class="[invalidSatuan && attemptSubmit ? 'is-invalid form-control' : 'form-control']">
-                                            <option value="">...</option>
+                                            <option value="" disabled>...</option>
                                             <option v-for="(satuans, index) in satuan" :value="satuans.id" :key="index">{{ satuans.satuan_name }}</option>
                                         </select>
-                                        <span v-if="attemptSubmit && invalidSatuan" class="help-block">{{ errors.satuan }}</span>
+                                        <span v-if="attemptSubmit && invalidSatuan" class="invalid-feedback">{{ errors.satuan }}</span>
 
                                     </div>
                                     <div class="form-group">
                                         <label for="price" class=" form-control-label">Harga :</label>
                                         <input type="number" v-model="price" name="price" :class="[invalidPrice && attemptSubmit ? 'is-invalid form-control' : 'form-control']">
-                                        <span v-if="attemptSubmit && invalidSatuan" class="help-block">{{ errors.price }}</span>
+                                        <span v-if="attemptSubmit && invalidSatuan" class="invalid-feedback">{{ errors.price }}</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="stok" class=" form-control-label">Stok :</label>
                                         <input type="number" v-model="stok" name="stok" :class="[invalidStok && attemptSubmit ? 'is-invalid form-control' : 'form-control']">
-                                        <span v-if="attemptSubmit && invalidSatuan" class="help-block">{{ errors.stok }}</span>
+                                        <span v-if="attemptSubmit && invalidSatuan" class="invalid-feedback">{{ errors.stok }}</span>
                                     </div>
                                     
                                     <div class="form-group">
@@ -211,15 +211,19 @@ export default {
 
         async fetchOne(){
             if(this.$route.params.id){
-                let data = await axios.get(`/api/barang/${this.$route.params.id}`)
-                console.log(data.data)
-                this.part_number = data.data.part_number
-                this.description = data.data.description
-                this.select_category = data.data.category_id
-                this.select_brand = data.data.brand_id
-                this.select_satuan = data.data.satuan_id
-                this.price = data.data.price
-                this.stok = data.data.stok
+                try {
+                    let data = await axios.get(`/api/barang/${this.$route.params.id}`)
+                    console.log(data.data)
+                    this.part_number = data.data.part_number
+                    this.description = data.data.description
+                    this.select_category = data.data.category_id
+                    this.select_brand = data.data.brand_id
+                    this.select_satuan = data.data.satuan_id
+                    this.price = data.data.price
+                    this.stok = data.data.stok
+                } catch (error) {
+                    console.log(error)
+                }
             }
         },
     }

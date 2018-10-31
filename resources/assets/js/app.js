@@ -19,10 +19,15 @@ import VueRouter from 'vue-router';
 import { routes } from './routes'
 Vue.use(VueRouter);
 
+
 const router = new VueRouter({
     // mode : 'history',
     routes
 })
+
+// global components
+// import Breadcrumbs from './components/BreadcrumbsComponent.vue'
+// Vue.component('Breadcrumbs', Breadcrumbs);
 
 const app = new Vue({
     el: '#app',

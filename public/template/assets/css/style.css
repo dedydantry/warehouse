@@ -348,11 +348,11 @@ Googel Fonts  */
 body {
   display: table;
   font-family: "Open Sans", sans-serif;
-  font-size: 16px;
+  font-size: 13px;
   width: 100%; }
 
 p {
-  font-size: 16px;
+  font-size: 13px;
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   line-height: 24px;
@@ -387,7 +387,9 @@ h5 {
 
 ul,
 ol {
-  padding-left: 0; }
+  padding-left: 0; 
+  list-style: none;
+}
 
 .btn:focus,
 button:focus {

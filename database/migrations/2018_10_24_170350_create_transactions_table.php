@@ -15,14 +15,12 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('barang_id')->unsigned()->nullable();
-            $table->integer('amount');
-            $table->string('picker');
+            $table->date('picker');
             $table->string('faktur_number');
+            $table->string('remark')->nullable();
+            $table->string('supplier')->nullable();
             $table->enum('status', ['IN', 'OUT']);
             $table->timestamps();
-
-            $table->foreign('barang_id')->references('id')->on('barangs');
         });
     }
 

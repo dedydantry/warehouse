@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="clearfix">
         <breadcrumbs title="Brand"></breadcrumbs>
         <div class="content">
             <div class="animate fade-in">

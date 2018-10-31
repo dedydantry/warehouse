@@ -32,8 +32,13 @@ class Barang extends Model
         return $this->belongsTo('App\Satuan', 'satuan_id');
     }
 
-    public function transaction()
+    public function order()
     {
-        return $this->hasMany('App\Transaction');
+        return $this->hasMany('App\Order',  'barang_id');
     }
+
+    // public function transaction()
+    // {
+    //     return $this->hasManyThrough('App\Transaction', 'App\Order');
+    // }
 }

@@ -4,10 +4,11 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class BrandResource extends Resource
+
+class CategoryResource extends Resource
 {
     /**
-     * Transform the resource into an array.
+     * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
@@ -17,15 +18,7 @@ class BrandResource extends Resource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'brand_name' => $this->brand_name,
-        ];
-    }
-
-    public function with($request)
-    {
-        return [
-            'version' => '1.0.0',
-            'author_url' => url('http://google.com')
+            'category_name' => $this->category_name
         ];
     }
 }
