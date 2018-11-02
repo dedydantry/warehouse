@@ -89,7 +89,15 @@ class TransactionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $transaction = Transaction::findOrFail($id);
+        $transaction->picker = $request->get('picker');
+        $transaction->faktur_number = $request->get('faktur_number');
+        $transaction->remark = $request->get('remark');
+        $transaction->supplier = $request->get('supplier');
+        if($transaction->save() && count($request->get('order'))){
+            $order = Order::multiInsert($request->get('order'), $transaction->id, strtoupper($transaction->status));
+            return new TransactionResource($transaction);
+        }
     }
 
     /**

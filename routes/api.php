@@ -39,5 +39,7 @@ Route::put('barang/{id}', 'BarangController@update');
 Route::get('transaction', 'TransactionController@index');
 Route::post('transaction', 'TransactionController@store');
 Route::get('transaction/show/{id}', 'TransactionController@show');
+Route::put('transaction/{id}', 'TransactionController@update');
 
 Route::get('order', 'OrderController@index');
+Route::delete('order/{id}', 'OrderController@destroy');

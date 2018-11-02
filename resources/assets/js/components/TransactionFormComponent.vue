@@ -33,18 +33,18 @@
                             <div class="card-body">
                                 <div class="row form-group">
                                     <div class="col-6">
-                                        <input type="date"  class="form-control form-control-sm" v-model="picker">
+                                        <input type="date"  class="form-control form-control-sm" v-model="form.picker">
                                     </div>
                                      <div class="col-6">
-                                        <input type="text"  class="form-control form-control-sm" placeholder="No Faktur" v-model="faktur">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="No Faktur" v-model="form.faktur">
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-6">
-                                        <input type="text"  class="form-control form-control-sm" placeholder="Supplier" v-model="supplier">
+                                        <input type="text"  class="form-control form-control-sm" placeholder="Supplier" v-model="form.supplier">
                                     </div>
                                      <div class="col-6">
-                                        <textarea name="" class="form-control form-control-sm" placeholder="Remark" v-model="remark"></textarea>
+                                        <textarea name="" class="form-control form-control-sm" placeholder="Remark" v-model="form.remark"></textarea>
                                     </div>
                                 </div>
                                 <table class="table table-sm">
@@ -52,25 +52,21 @@
                                         <tr>
                                          <th scope="col">P.Number</th>
                                          <th scope="col">Detail</th>
-                                         <th scope="col">Brand</th>
-                                         <th scope="col">Satuan</th>
                                          <th scope="col">jumlah</th>
-                                         <th scope="col" v-if="cekBarang"><button class="btn btn-link" title="Delete all" v-on:click="destroyAll()"><i class="fa fa-trash"></i></button></th>
+                                         <th scope="col" v-if="cekBarang && !this.$route.params.id"><button class="btn btn-link" title="Delete all" v-on:click="destroyAll()"><i class="fa fa-trash"></i></button></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(value, index) in array_barang" :key="index">
-                                            <td>{{ value.part_number }}</td>
-                                            <td>{{ value.category.category_name }}</td>
-                                            <td>{{ value.brand.brand_name}}</td>
-                                            <td>{{ value.satuan.satuan_name}}</td>
-                                            <td>{{ value.count }}</td>
+                                            <td>{{ value.part_number ? value.part_number : value.barang.part_number }}</td>
+                                            <td>{{ value.category ?  value.category.category_name : value.barang.category.category_name }}</td>
+                                            <td>{{ value.count ? value.count : value.amount }} {{ value.satuan ? value.satuan.satuan_name : value.barang.satuan.satuan_name }}</td>
                                             <td><button class="btn btn-link" v-on:click="destroy(value)"><i class="fa fa-trash"></i></button></td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <div class="form-group" v-if="cekBarang">
-                                    <button  class="btn btn-outline-primary" v-on:click="saveTransaction()">Save</button>
+                                    <button v-if="cekUpdate" class="btn btn-outline-primary" v-on:click="submitform()">Save</button>
                                     <button  class="btn btn-outline-danger" v-on:click="cancel()">Cancel</button>
                                 </div>
                             </div>
@@ -91,11 +87,9 @@ export default {
             select_barang : {},
             count_barang : 0,
             array_barang : [],
-            picker:'',
-            faktur:'',
-            supplier:'',
-            remark:'',
-            order_transaction:[]
+            form:{},
+            order_transaction:[],
+            update_post :[]
         }
     },
 
@@ -106,6 +100,13 @@ export default {
     computed:{
         cekBarang(){
             return this.array_barang.length ? true : false
+        },
+
+        cekUpdate(){
+            if(this.$route.params.status){
+                return true;
+            }
+            return this.update_post.length > 0 ? true : false
         }
     },
 
@@ -134,16 +135,40 @@ export default {
     
                 this.select_barang.count = parseInt(this.count_barang)
                 this.array_barang.push(this.select_barang)
-                console.log(this.array_barang)
+
+                if(this.$route.params.id){
+                    this.update_post.push(this.select_barang)
+                }
                 return this.reset()
             }
         },
 
         destroy(items){
+            
             if(confirm("Hapus data ini ?")){
                 let index = this.array_barang.indexOf(items)
+                if(this.$route.params.id){
+                    if(this.array_barang.length >1){
+                        this.$delete(this.array_barang, index)
+                        this.$delete(this.update_post, index)
+                        if(this.update_post.length < 1) return this.deleteOrder(items)
+                    } else{
+                        alert('Failed to delete')
+                        return;
+                    }
+                }
+                this.$delete(this.update_post, index)
                 this.$delete(this.array_barang, index)
+               
                 return this.barang.push(items)
+            }
+        },
+
+        async deleteOrder(items){
+            try {
+                let remove = await axios.delete('api/order/'+items.id)
+            } catch (error) {
+                console.log(error)
             }
         },
 
@@ -154,36 +179,75 @@ export default {
             }
         },
 
+        async submitform(){
+           return this.$route.params.id ? this.updateTransaction() : this.saveTransaction()
+        },
+
         async saveTransaction(){
-            try {
+             try {
+                let datas = this.array_barang
                 let save = await axios.post('/api/transaction', {
-                    "picker" : this.picker,
-                    "faktur_number" : this.faktur,
-                    "remark" : this.remark,
-                    "supplier" :this.supplier,
+                    "picker" : this.form.picker,
+                    "faktur_number" : this.form.faktur,
+                    "remark" : this.form.remark,
+                    "supplier" :this.form.supplier,
                     "status" : this.$route.params.status,
-                    "barang" : this.array_barang
+                    "barang" : datas
                 });
                 return this.$router.push('/transaction/'+this.$route.params.status);
             } catch (error) {
                 console.log(error)
             }
-            
         },
 
         // edit transaction
         async fetchOneTransaction(){
             try {
                 let data = await axios.get('/api/transaction/show/'+this.$route.params.id)
-                this.picker = data.data.picker
-                this.faktur = data.data.faktur_number
-                this.supplier = data.data.supplier
-                this.remark = data.data.remark
-                // this.array_barang = data.data.order
+                this.form.picker = data.data.picker
+                this.form.faktur = data.data.faktur_number
+                this.form.supplier = data.data.supplier
+                this.form.remark = data.data.remark
+                this.array_barang = data.data.order
+                return this.removeItemsArray(data.data.order)
             } catch (error) {
                 console.log(error)
             }
             
+        },
+
+        removeItemsArray(arr){
+            for(var value in arr){
+                var index = this.barang.map((el)=>{
+                    return el.category.category_name
+                }).indexOf(arr[value].barang.category.category_name)
+                this.$delete(this.barang, index)
+            }
+        },
+
+        generateEditPost(){
+            this.array_barang.forEach((key, index)=>{
+                this.update_post.push({
+                    'barang_id' : key.barang.id,
+                    'amount' : key.amount
+                })
+            });
+        },
+
+        async updateTransaction(){
+            try {
+                let update = await axios.put('api/transaction/'+this.$route.params.id, {
+                    "picker" : this.form.picker,
+                    "faktur_number" : this.form.faktur,
+                    "remark" : this.form.remark,
+                    "supplier" :this.form.supplier,
+                    "order" : this.update_post
+                })
+                console.log(update)
+            } catch (error) {
+                console.log(error)
+            }
+
         },
 
         cancel(){

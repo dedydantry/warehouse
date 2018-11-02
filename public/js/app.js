@@ -1126,7 +1126,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(13);
-module.exports = __webpack_require__(65);
+module.exports = __webpack_require__(74);
 
 
 /***/ }),
@@ -45896,11 +45896,11 @@ if (inBrowser && window.Vue) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_BarangComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_BarangComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_BarangNewComponent_vue__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_BarangNewComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_BarangNewComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_TransactionComponent_vue__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_TransactionComponent_vue__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_TransactionComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_TransactionComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_TransactionFormComponent_vue__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_TransactionFormComponent_vue__ = __webpack_require__(68);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_TransactionFormComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_TransactionFormComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_OrderTransactionComponent_vue__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_OrderTransactionComponent_vue__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_OrderTransactionComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_OrderTransactionComponent_vue__);
 // Vue.component('home', require('./components/HomeComponent.vue'));
 
@@ -49839,30 +49839,14 @@ if (false) {
 
 /***/ }),
 /* 65 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(77)
+var __vue_script__ = __webpack_require__(66)
 /* template */
-var __vue_template__ = __webpack_require__(78)
+var __vue_template__ = __webpack_require__(67)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49901,7 +49885,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 77 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50036,7 +50020,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 });
 
 /***/ }),
-/* 78 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50164,15 +50148,15 @@ if (false) {
 }
 
 /***/ }),
-/* 79 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(80)
+var __vue_script__ = __webpack_require__(69)
 /* template */
-var __vue_template__ = __webpack_require__(81)
+var __vue_template__ = __webpack_require__(70)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50211,7 +50195,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 80 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50304,10 +50288,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -50317,11 +50297,9 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             select_barang: {},
             count_barang: 0,
             array_barang: [],
-            picker: '',
-            faktur: '',
-            supplier: '',
-            remark: '',
-            order_transaction: []
+            form: {},
+            order_transaction: [],
+            update_post: []
         };
     },
 
@@ -50333,6 +50311,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     computed: {
         cekBarang: function cekBarang() {
             return this.array_barang.length ? true : false;
+        },
+        cekUpdate: function cekUpdate() {
+            if (this.$route.params.status) {
+                return true;
+            }
+            return this.update_post.length > 0 ? true : false;
         }
     },
 
@@ -50390,61 +50374,136 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
                 this.select_barang.count = parseInt(this.count_barang);
                 this.array_barang.push(this.select_barang);
-                console.log(this.array_barang);
+
+                if (this.$route.params.id) {
+                    this.update_post.push(this.select_barang);
+                }
                 return this.reset();
             }
         },
         destroy: function destroy(items) {
+
             if (confirm("Hapus data ini ?")) {
                 var index = this.array_barang.indexOf(items);
+                if (this.$route.params.id) {
+                    if (this.array_barang.length > 1) {
+                        this.$delete(this.array_barang, index);
+                        this.$delete(this.update_post, index);
+                        if (this.update_post.length < 1) return this.deleteOrder(items);
+                    } else {
+                        alert('Failed to delete');
+                        return;
+                    }
+                }
+                this.$delete(this.update_post, index);
                 this.$delete(this.array_barang, index);
+
                 return this.barang.push(items);
             }
         },
-        destroyAll: function destroyAll() {
-            if (confirm("Hapus semua data ?")) {
-                Array.prototype.push.apply(this.barang, this.array_barang);
-                return this.array_barang = [];
-            }
-        },
-        saveTransaction: function () {
-            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
-                var save;
+        deleteOrder: function () {
+            var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2(items) {
+                var remove;
                 return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
                     while (1) {
                         switch (_context2.prev = _context2.next) {
                             case 0:
                                 _context2.prev = 0;
                                 _context2.next = 3;
-                                return axios.post('/api/transaction', {
-                                    "picker": this.picker,
-                                    "faktur_number": this.faktur,
-                                    "remark": this.remark,
-                                    "supplier": this.supplier,
-                                    "status": this.$route.params.status,
-                                    "barang": this.array_barang
-                                });
+                                return axios.delete('api/order/' + items.id);
 
                             case 3:
-                                save = _context2.sent;
-                                return _context2.abrupt('return', this.$router.push('/transaction/' + this.$route.params.status));
+                                remove = _context2.sent;
+                                _context2.next = 9;
+                                break;
 
-                            case 7:
-                                _context2.prev = 7;
+                            case 6:
+                                _context2.prev = 6;
                                 _context2.t0 = _context2['catch'](0);
 
                                 console.log(_context2.t0);
 
-                            case 10:
+                            case 9:
                             case 'end':
                                 return _context2.stop();
                         }
                     }
-                }, _callee2, this, [[0, 7]]);
+                }, _callee2, this, [[0, 6]]);
+            }));
+
+            function deleteOrder(_x) {
+                return _ref2.apply(this, arguments);
+            }
+
+            return deleteOrder;
+        }(),
+        destroyAll: function destroyAll() {
+            if (confirm("Hapus semua data ?")) {
+                Array.prototype.push.apply(this.barang, this.array_barang);
+                return this.array_barang = [];
+            }
+        },
+        submitform: function () {
+            var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3() {
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                return _context3.abrupt('return', this.$route.params.id ? this.updateTransaction() : this.saveTransaction());
+
+                            case 1:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function submitform() {
+                return _ref3.apply(this, arguments);
+            }
+
+            return submitform;
+        }(),
+        saveTransaction: function () {
+            var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4() {
+                var datas, save;
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+                    while (1) {
+                        switch (_context4.prev = _context4.next) {
+                            case 0:
+                                _context4.prev = 0;
+                                datas = this.array_barang;
+                                _context4.next = 4;
+                                return axios.post('/api/transaction', {
+                                    "picker": this.form.picker,
+                                    "faktur_number": this.form.faktur,
+                                    "remark": this.form.remark,
+                                    "supplier": this.form.supplier,
+                                    "status": this.$route.params.status,
+                                    "barang": datas
+                                });
+
+                            case 4:
+                                save = _context4.sent;
+                                return _context4.abrupt('return', this.$router.push('/transaction/' + this.$route.params.status));
+
+                            case 8:
+                                _context4.prev = 8;
+                                _context4.t0 = _context4['catch'](0);
+
+                                console.log(_context4.t0);
+
+                            case 11:
+                            case 'end':
+                                return _context4.stop();
+                        }
+                    }
+                }, _callee4, this, [[0, 8]]);
             }));
 
             function saveTransaction() {
-                return _ref2.apply(this, arguments);
+                return _ref4.apply(this, arguments);
             }
 
             return saveTransaction;
@@ -50453,46 +50512,107 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
         // edit transaction
         fetchOneTransaction: function () {
-            var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3() {
+            var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5() {
                 var data;
-                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
                     while (1) {
-                        switch (_context3.prev = _context3.next) {
+                        switch (_context5.prev = _context5.next) {
                             case 0:
-                                _context3.prev = 0;
-                                _context3.next = 3;
+                                _context5.prev = 0;
+                                _context5.next = 3;
                                 return axios.get('/api/transaction/show/' + this.$route.params.id);
 
                             case 3:
-                                data = _context3.sent;
+                                data = _context5.sent;
 
-                                this.picker = data.data.picker;
-                                this.faktur = data.data.faktur_number;
-                                this.supplier = data.data.supplier;
-                                this.remark = data.data.remark;
-                                // this.array_barang = data.data.order
-                                _context3.next = 13;
-                                break;
+                                this.form.picker = data.data.picker;
+                                this.form.faktur = data.data.faktur_number;
+                                this.form.supplier = data.data.supplier;
+                                this.form.remark = data.data.remark;
+                                this.array_barang = data.data.order;
+                                return _context5.abrupt('return', this.removeItemsArray(data.data.order));
 
-                            case 10:
-                                _context3.prev = 10;
-                                _context3.t0 = _context3['catch'](0);
+                            case 12:
+                                _context5.prev = 12;
+                                _context5.t0 = _context5['catch'](0);
 
-                                console.log(_context3.t0);
+                                console.log(_context5.t0);
 
-                            case 13:
+                            case 15:
                             case 'end':
-                                return _context3.stop();
+                                return _context5.stop();
                         }
                     }
-                }, _callee3, this, [[0, 10]]);
+                }, _callee5, this, [[0, 12]]);
             }));
 
             function fetchOneTransaction() {
-                return _ref3.apply(this, arguments);
+                return _ref5.apply(this, arguments);
             }
 
             return fetchOneTransaction;
+        }(),
+        removeItemsArray: function removeItemsArray(arr) {
+            for (var value in arr) {
+                var index = this.barang.map(function (el) {
+                    return el.category.category_name;
+                }).indexOf(arr[value].barang.category.category_name);
+                this.$delete(this.barang, index);
+            }
+        },
+        generateEditPost: function generateEditPost() {
+            var _this = this;
+
+            this.array_barang.forEach(function (key, index) {
+                _this.update_post.push({
+                    'barang_id': key.barang.id,
+                    'amount': key.amount
+                });
+            });
+        },
+        updateTransaction: function () {
+            var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6() {
+                var update;
+                return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee6$(_context6) {
+                    while (1) {
+                        switch (_context6.prev = _context6.next) {
+                            case 0:
+                                _context6.prev = 0;
+                                _context6.next = 3;
+                                return axios.put('api/transaction/' + this.$route.params.id, {
+                                    "picker": this.form.picker,
+                                    "faktur_number": this.form.faktur,
+                                    "remark": this.form.remark,
+                                    "supplier": this.form.supplier,
+                                    "order": this.update_post
+                                });
+
+                            case 3:
+                                update = _context6.sent;
+
+                                console.log(update);
+                                _context6.next = 10;
+                                break;
+
+                            case 7:
+                                _context6.prev = 7;
+                                _context6.t0 = _context6['catch'](0);
+
+                                console.log(_context6.t0);
+
+                            case 10:
+                            case 'end':
+                                return _context6.stop();
+                        }
+                    }
+                }, _callee6, this, [[0, 7]]);
+            }));
+
+            function updateTransaction() {
+                return _ref6.apply(this, arguments);
+            }
+
+            return updateTransaction;
         }(),
         cancel: function cancel() {
             return this.$router.push('/transaction/' + this.$route.params.status);
@@ -50505,7 +50625,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 });
 
 /***/ }),
-/* 81 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50629,19 +50749,19 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.picker,
-                            expression: "picker"
+                            value: _vm.form.picker,
+                            expression: "form.picker"
                           }
                         ],
                         staticClass: "form-control form-control-sm",
                         attrs: { type: "date" },
-                        domProps: { value: _vm.picker },
+                        domProps: { value: _vm.form.picker },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.picker = $event.target.value
+                            _vm.$set(_vm.form, "picker", $event.target.value)
                           }
                         }
                       })
@@ -50653,19 +50773,19 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.faktur,
-                            expression: "faktur"
+                            value: _vm.form.faktur,
+                            expression: "form.faktur"
                           }
                         ],
                         staticClass: "form-control form-control-sm",
                         attrs: { type: "text", placeholder: "No Faktur" },
-                        domProps: { value: _vm.faktur },
+                        domProps: { value: _vm.form.faktur },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.faktur = $event.target.value
+                            _vm.$set(_vm.form, "faktur", $event.target.value)
                           }
                         }
                       })
@@ -50679,19 +50799,19 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.supplier,
-                            expression: "supplier"
+                            value: _vm.form.supplier,
+                            expression: "form.supplier"
                           }
                         ],
                         staticClass: "form-control form-control-sm",
                         attrs: { type: "text", placeholder: "Supplier" },
-                        domProps: { value: _vm.supplier },
+                        domProps: { value: _vm.form.supplier },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.supplier = $event.target.value
+                            _vm.$set(_vm.form, "supplier", $event.target.value)
                           }
                         }
                       })
@@ -50703,19 +50823,19 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.remark,
-                            expression: "remark"
+                            value: _vm.form.remark,
+                            expression: "form.remark"
                           }
                         ],
                         staticClass: "form-control form-control-sm",
                         attrs: { name: "", placeholder: "Remark" },
-                        domProps: { value: _vm.remark },
+                        domProps: { value: _vm.form.remark },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.remark = $event.target.value
+                            _vm.$set(_vm.form, "remark", $event.target.value)
                           }
                         }
                       })
@@ -50734,18 +50854,10 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("th", { attrs: { scope: "col" } }, [
-                          _vm._v("Brand")
-                        ]),
-                        _vm._v(" "),
-                        _c("th", { attrs: { scope: "col" } }, [
-                          _vm._v("Satuan")
-                        ]),
-                        _vm._v(" "),
-                        _c("th", { attrs: { scope: "col" } }, [
                           _vm._v("jumlah")
                         ]),
                         _vm._v(" "),
-                        _vm.cekBarang
+                        _vm.cekBarang && !this.$route.params.id
                           ? _c("th", { attrs: { scope: "col" } }, [
                               _c(
                                 "button",
@@ -50769,17 +50881,37 @@ var render = function() {
                       "tbody",
                       _vm._l(_vm.array_barang, function(value, index) {
                         return _c("tr", { key: index }, [
-                          _c("td", [_vm._v(_vm._s(value.part_number))]),
-                          _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(value.category.category_name))
+                            _vm._v(
+                              _vm._s(
+                                value.part_number
+                                  ? value.part_number
+                                  : value.barang.part_number
+                              )
+                            )
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(value.brand.brand_name))]),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                value.category
+                                  ? value.category.category_name
+                                  : value.barang.category.category_name
+                              )
+                            )
+                          ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(value.satuan.satuan_name))]),
-                          _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(value.count))]),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(value.count ? value.count : value.amount) +
+                                " " +
+                                _vm._s(
+                                  value.satuan
+                                    ? value.satuan.satuan_name
+                                    : value.barang.satuan.satuan_name
+                                )
+                            )
+                          ]),
                           _vm._v(" "),
                           _c("td", [
                             _c(
@@ -50802,18 +50934,20 @@ var render = function() {
                   _vm._v(" "),
                   _vm.cekBarang
                     ? _c("div", { staticClass: "form-group" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-outline-primary",
-                            on: {
-                              click: function($event) {
-                                _vm.saveTransaction()
-                              }
-                            }
-                          },
-                          [_vm._v("Save")]
-                        ),
+                        _vm.cekUpdate
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-outline-primary",
+                                on: {
+                                  click: function($event) {
+                                    _vm.submitform()
+                                  }
+                                }
+                              },
+                              [_vm._v("Save")]
+                            )
+                          : _vm._e(),
                         _vm._v(" "),
                         _c(
                           "button",
@@ -50867,15 +51001,15 @@ if (false) {
 }
 
 /***/ }),
-/* 82 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(83)
+var __vue_script__ = __webpack_require__(72)
 /* template */
-var __vue_template__ = __webpack_require__(84)
+var __vue_template__ = __webpack_require__(73)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50914,7 +51048,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 83 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51070,7 +51204,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 });
 
 /***/ }),
-/* 84 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -51223,6 +51357,12 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-af4be8f4", module.exports)
   }
 }
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

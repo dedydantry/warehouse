@@ -85,6 +85,7 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $order = Order::findOrFail($id);
+        if($order->delete()) return new OrderResource($order);
     }
 }

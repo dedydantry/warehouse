@@ -26,7 +26,7 @@ class BarangResource extends Resource
             'category_id' => $this->category_id, 
             'brand_id' => $this->brand_id, 
             'satuan_id' => $this->satuan_id,
-            'category' => new CategoryResource($this->whenLoaded('categories')), 
+            'category' => new CategoryResource($this->categories), 
             'brand' => new BrandResource($this->whenLoaded('brands')), 
             'satuan' => new SatuanResource($this->satuans)
         ];
