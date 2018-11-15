@@ -8,6 +8,7 @@ import NewBarang from './components/BarangNewComponent.vue';
 import Transaction from './components/TransactionComponent.vue';
 import FormTransaction from './components/TransactionFormComponent.vue';
 import OrderTransaction from './components/OrderTransactionComponent.vue';
+import ReportStok from './components/StokReportComponent.vue';
 
 export const routes = [
     { path : '/', component:Home, name:'home'},
@@ -20,5 +21,6 @@ export const routes = [
     { path : '/transaction/:status', component:Transaction, name:'transaction'},
     { path : '/transaction/create/:status', component:FormTransaction, name:'transactionForm'},
     { path : '/transaction/edit/:id', component:FormTransaction, name:'transactionEdit'},
-    { path : '/transaction/order/:id', component:OrderTransaction, name:'transactionOrder'}
+    { path : '/transaction/order/:id', component:OrderTransaction, name:'transactionOrder'},
+    { path : '/report/stok', component:ReportStok, name:'report'}
 ]

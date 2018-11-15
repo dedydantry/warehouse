@@ -10,38 +10,48 @@
                 <li class="menu-title">Master Data</li><!-- /.menu-title -->
                 <li>
                     {{-- <a href="widgets.html"> <i class="menu-icon fa fa-sitemap"></i>Kategori </a> --}}
-                    <router-link to="/category"><i class="menu-icon fa fa-laptop"></i>Kategori</router-link>
+                    <router-link to="/category"><i class="menu-icon fa fa-laptop"></i>&nbsp;Kategori</router-link>
 
                 </li>
                 <li>
-                    <router-link to="/brand"><i class="menu-icon fa fa-sitemap"></i>Brand</router-link>
+                    <router-link to="/brand"><i class="menu-icon fa fa-sitemap"></i>&nbsp;Brand</router-link>
                 </li>
 
                 <li>
-                    <router-link to="/satuan"><i class="menu-icon fa fa-sitemap"></i>Satuan</router-link>
+                    <router-link to="/satuan"><i class="menu-icon fa fa-sitemap"></i>&nbsp;Satuan</router-link>
                 </li>
 
-                <li class="menu-title">Master Barang</li><!-- /.menu-title -->
-
-                <li>
-                    <router-link to="/barang"><i class="menu-icon fa fa-suitcase"></i>Barang</router-link>
+                <li class="menu-title">Transaction</li><!-- /.menu-title -->
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Items</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li>
+                            <i class="menu-icon fa fa-suitcase"></i><router-link to="/barang">&nbsp; List Items</router-link>
+                        </li>
+                        <li>
+                            <i class="menu-icon fa fa-suitcase"></i><router-link to="/transaction/in">&nbsp; Receive Items</router-link>
+                        </li>
+                        <li>
+                            <i class="menu-icon fa fa-suitcase"></i><router-link to="/transaction/out">&nbsp; Issue Items</router-link>
+                        </li>
+                    </ul>
                 </li>
+
                 
-                <li>
-                    <router-link to="/transaction/in"><i class="menu-icon fa fa-suitcase"></i>In</router-link>
-                </li>
-                <li>
-                    <router-link to="/transaction/out"><i class="menu-icon fa fa-suitcase"></i>Out</router-link>
-                </li>
-                <li class="menu-title">Laporan</li><!-- /.menu-title -->
-                <li>
-                    <a href="widgets.html"> <i class="menu-icon fa fa-bullhorn"></i>In </a>
-                </li>
-                <li>
-                    <a href="widgets.html"> <i class="menu-icon fa fa-bullhorn"></i>Out </a>
-                </li>
-                <li>
-                    <a href="widgets.html"> <i class="menu-icon fa fa-bullhorn"></i>Stok </a>
+                <li class="menu-title">Report</li><!-- /.menu-title -->
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Select</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li>
+                            <i class="menu-icon fa fa-bullhorn"></i><router-link to="/report/stok">&nbsp; Items Stock</router-link>
+                        </li>
+                        <li>
+                            <i class="menu-icon fa fa-bullhorn"></i><router-link to="/report/In">&nbsp; Receive</router-link>
+                        </li>
+                        <li>
+                            <i class="menu-icon fa fa-bullhorn"></i><router-link to="/report/In">&nbsp; Issue</router-link>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div><!-- /.navbar-collapse -->

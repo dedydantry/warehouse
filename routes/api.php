@@ -43,3 +43,5 @@ Route::put('transaction/{id}', 'TransactionController@update');
 
 Route::get('order', 'OrderController@index');
 Route::delete('order/{id}', 'OrderController@destroy');
+
+Route::get('report', 'ReportController@destroy');

@@ -243,7 +243,9 @@ export default {
                     "supplier" :this.form.supplier,
                     "order" : this.update_post
                 })
-                console.log(update)
+    
+                return this.$router.push('/transaction/') 
+
             } catch (error) {
                 console.log(error)
             }
