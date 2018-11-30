@@ -42,14 +42,21 @@
 
 <script>
 import Breadcrumbs from './BreadcrumbsComponent.vue'
-import jsPDF from 'jspdf'
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default {
     data(){
         return{
             barang:{
                 
-            }
+            },
+            table:[
+                ['No', 'PartNumber', 'Category', 'Brand', 'Stok'],
+                ['Jon', 'jin', 'jne', 'kak', 'ls']
+            ]
+            
         }
     },
 
@@ -59,6 +66,7 @@ export default {
 
     created(){
         this.fetchBarang()
+        this.generateTabelPdf()
     },
 
     methods:{
@@ -73,11 +81,70 @@ export default {
             }
         },
 
+        generateTabelPdf(){
+            for (var prop in this.barang) {
+                console.log(this.barang(prop))
+            }
+        },
+
         generatePDF(){
-            let pdfName = "stok"
-            var doc = new jsPDF()
-            doc.text("Hello Wordl")
-            doc.save(pdfName + '.pdf')
+            
+           var dd = {
+                content: [
+                    {
+                        text : 'LAPORAN STOK BARANG',
+                        style : 'header',
+                    },
+
+                    {
+                        text : 'PT. BINA KARYA',
+                        style : 'subheader',
+                        alignment: 'center'
+                    },
+                    {
+                        canvas: [{ type: 'line', x1: 0, y1: 5, x2: 595-2*40, y2: 5, lineWidth: 3 }]
+                    },
+                    {
+                        // style:"tabelstok",
+                        // table:{
+                        //     	headerRows: 1,
+                        //     body : this.table
+                        // }
+                         columns: [
+                            { width: '*', text: '' },
+                            {
+                                width: 'auto',
+                                style:"tabelstok",
+                                table: {
+                                    widths: ['auto', 100,  100, 120, 'auto'],
+                                    body : this.table
+                                }
+                            },
+                            { width: '*', text: '' },
+                        ]
+                    }
+                ],
+                styles:{
+                    fontFamily : 'times new roman',
+                    header:{
+                        fontSize:20,
+                        bold:true,
+                        alignment: 'center'
+                    },
+                    subheader:{
+                        fontSize:16,
+                        bold:true,
+                        alignment: 'center'
+                    },
+                    tabelstok:{
+                        margin: [0, 5, 0, 15]
+                    }
+                },
+                
+                
+            }
+             pdfMake.createPdf(dd).open();
+            //  pdfMake.createPdf(dd).download('jos');
         }
     }
 }

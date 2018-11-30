@@ -134,7 +134,8 @@
 
                                 <a class="nav-link" href="#"><i class="fa fa-cog"></i>Settings</a>
 
-                                <a class="nav-link" href="#"><i class="fa fa-power-off"></i>Logout</a>
+                                <a class="nav-link" href="#" onclick="document.getElementById('logout').submit()"><i class="fa fa-power-off"></i>Logout</a>
+                                <form action="{{ url('logout') }}" method="post" id="logout" style="display: none;">{{ csrf_field() }}</form>
                             </div>
                         </div> 
                     </div>  

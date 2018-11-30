@@ -19,7 +19,7 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
-        "jspdf": "^1.4.1",
+        "pdfmake": "^0.1.39",
         "vue-router": "^3.0.1"
     }
 }
