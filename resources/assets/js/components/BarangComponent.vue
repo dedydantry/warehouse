@@ -1,13 +1,13 @@
 <template>
     <div class="clearfix">
-        <breadcrumbs title="Barang"></breadcrumbs>
+        <breadcrumbs title="Items"></breadcrumbs>
         <div class="content">
             <div class="animate fade-in">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong class="card-title">Barang</strong>
+                                <strong class="card-title">Items </strong>
                                 <router-link to="/barang/create" class="btn btn-outline-primary float-sm-right"><i class="fa fa-plus"></i> New</router-link>
                             </div>
                             <div class="card-body">

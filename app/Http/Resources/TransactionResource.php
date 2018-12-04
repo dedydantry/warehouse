@@ -21,6 +21,7 @@ class TransactionResource extends Resource
             'faktur_number' => $this->faktur_number,
             'supplier' => $this->supplier,
             'remark' => $this->remark,
+            'status' => $this->status,
             'order' =>  OrderResource::collection($this->whenLoaded('order'))
         ];
     }

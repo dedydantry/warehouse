@@ -3,82 +3,33 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests;
+use App\Transaction;
+use App\Order;
+use App\Http\Resources\OrderResource;
 
 class ReportController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function transaction(Request $request, $status)
     {
-        //
-    }
+        $status = strtoupper($status);
+        $ar = [];
+        if($request->get('periode')){
+            $ar = explode('-', $request->get('periode'));
+        } else {
+            $ar =[date('Y'), date('m')];
+        }
+        $transaction = Transaction::select('id')
+                        ->where('status', $status)
+                        ->whereYear('picker', '=', $ar[0])
+                        ->whereMonth('picker', '=', $ar[1])
+                        ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $order = Order::whereIn('transaction_id', $transaction)
+                        ->orderBy('id', 'DESC')
+                        ->limit(50)
+                        ->get();
+       return OrderResource::collection($order);
+        
     }
 }

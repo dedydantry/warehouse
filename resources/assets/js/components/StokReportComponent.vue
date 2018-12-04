@@ -16,6 +16,7 @@
                                             <tr>
                                             <th scope="col">#</th>
                                             <th scope="col">Part Number</th>
+                                            <th scope="col">Items Name</th>
                                             <th scope="col">Category</th>
                                             <th scope="col">Brand</th>
                                             <th scope="col">Stok</th>
@@ -25,6 +26,7 @@
                                         <tr v-for="(barangs, index) in barang" v-bind:key="index">
                                             <td>{{ index+1 }}</td>
                                             <td>{{ barangs.part_number }}</td>
+                                            <td>{{ barangs.description }}</td>
                                             <td>{{ barangs.category.category_name }}</td>
                                             <td>{{ barangs.brand.brand_name }}</td>
                                             <td>{{ barangs.stok }} {{ barangs.satuan.satuan_name }}</td>
@@ -42,9 +44,7 @@
 
 <script>
 import Breadcrumbs from './BreadcrumbsComponent.vue'
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import table from '../helper/table.js';
 
 export default {
     data(){
@@ -52,11 +52,14 @@ export default {
             barang:{
                 
             },
-            table:[
-                ['No', 'PartNumber', 'Category', 'Brand', 'Stok'],
-                ['Jon', 'jin', 'jne', 'kak', 'ls']
-            ]
-            
+            table:[[
+                {text:'#', bold:true, fontSize:10, alignment:'center'}, 
+                {text:'PartNumber', bold:true, fontSize:10, alignment:'center'}, 
+                {text:'Items Name', bold:true, fontSize:10, alignment:'center'}, 
+                {text:'Category', bold:true, fontSize:10, alignment:'center'}, 
+                {text:'Brand', bold:true, fontSize:10, alignment:'center'}, 
+                {text:'Stok', bold:true, fontSize:10, alignment:'center'}
+            ]]
         }
     },
 
@@ -66,7 +69,6 @@ export default {
 
     created(){
         this.fetchBarang()
-        this.generateTabelPdf()
     },
 
     methods:{
@@ -75,76 +77,34 @@ export default {
             try {
                 let barang = await axios.get('/api/barang');
                 this.barang = barang.data.data
-                console.log(this.barang)
             } catch (error) {
                 console.log(error)
             }
         },
 
-        generateTabelPdf(){
-            for (var prop in this.barang) {
-                console.log(this.barang(prop))
-            }
+        generateTabelPdf(items){
+           items.map((value, index) => {
+                var res = [
+                    {text: index+1, fontSize:9},
+                    {text : value.part_number, fontSize:9},
+                    {text : value.description, fontSize:9},
+                    {text :  value.category.category_name, fontSize:9},
+                    {text :value.brand.brand_name, fontSize:9},
+                    {text:value.stok+' '+value.satuan.satuan_name, fontSize:9},
+                ]
+                this.table.push(res)
+           })
         },
 
         generatePDF(){
+            this.generateTabelPdf(this.barang)
             
-           var dd = {
-                content: [
-                    {
-                        text : 'LAPORAN STOK BARANG',
-                        style : 'header',
-                    },
-
-                    {
-                        text : 'PT. BINA KARYA',
-                        style : 'subheader',
-                        alignment: 'center'
-                    },
-                    {
-                        canvas: [{ type: 'line', x1: 0, y1: 5, x2: 595-2*40, y2: 5, lineWidth: 3 }]
-                    },
-                    {
-                        // style:"tabelstok",
-                        // table:{
-                        //     	headerRows: 1,
-                        //     body : this.table
-                        // }
-                         columns: [
-                            { width: '*', text: '' },
-                            {
-                                width: 'auto',
-                                style:"tabelstok",
-                                table: {
-                                    widths: ['auto', 100,  100, 120, 'auto'],
-                                    body : this.table
-                                }
-                            },
-                            { width: '*', text: '' },
-                        ]
-                    }
-                ],
-                styles:{
-                    fontFamily : 'times new roman',
-                    header:{
-                        fontSize:20,
-                        bold:true,
-                        alignment: 'center'
-                    },
-                    subheader:{
-                        fontSize:16,
-                        bold:true,
-                        alignment: 'center'
-                    },
-                    tabelstok:{
-                        margin: [0, 5, 0, 15]
-                    }
-                },
-                
-                
-            }
-             pdfMake.createPdf(dd).open();
-            //  pdfMake.createPdf(dd).download('jos');
+            let params = {
+               'title' : 'Items Stock Report',
+               'data' : this.table,
+               'width':['auto', 100, 100,  100, 100, 'auto']
+           }
+           return table(params)
         }
     }
 }

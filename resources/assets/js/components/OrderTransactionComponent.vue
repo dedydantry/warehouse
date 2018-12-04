@@ -9,7 +9,7 @@
                             <div class="card-header">
                                 <strong class="card-title">{{ isTitle }} Details</strong>
                                 <div class="float-sm-right">
-                                    <button class="btn btn-link btn-sm" title="Print"><i class="fa fa-print"></i></button> |
+                                    <button class="btn btn-link btn-sm" v-on:click="generatePDF()" title="Print"><i class="fa fa-print"></i></button> |
                                     <router-link :to="`/transaction/edit/${this.$route.params.id}`" title="Detail" class="btn btn-link btn-sm"><i class="fa fa-edit"></i></router-link>
 
                                 </div>
@@ -20,7 +20,7 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Part Number</th>
-                                            <th>Description</th>
+                                            <th>Name</th>
                                             <th>UoM</th>
                                             <th>Amount</th>
                                         </tr>
@@ -44,7 +44,7 @@
                                 <div class="row">
                                     <div class="col-md-4 ml-auto">
                                         <p class="text-right">
-                                           Total Jenis Barang : {{ order.length }} items
+                                           Total : {{ order.length }} items
                                         </p>
                                     </div>
                                     <div class="col-sm-12">
@@ -69,10 +69,16 @@
 
 <script>
 import Breadcrumbs from './BreadcrumbsComponent.vue'
+import table from '../helper/receipt.js';
+import receipt from '../helper/receipt.js';
+
 export default {
     data(){
         return {
             order :[],
+            table :[
+                [{text:'#', bold:true}, {text:'Part Number', bold:true}, {text:'Item Name', bold:true}, {text:'Amount', bold:true}]
+            ]
         }
     },
 
@@ -103,8 +109,36 @@ export default {
             } catch (error) {
                 console.log(error)
             }
+        },
+
+        generateTable(items){
+            items.map((value, index) => {
+                var res = [
+                    {text : index+1, fontSize:9},
+                    {text:value.barang.part_number, fontSize:9},
+                    {text:value.barang.description, fontSize:9},
+                    {text:value.amount+' '+value.barang.satuan.satuan_name, fontSize:9},
+                ]
+                this.table.push(res)
+            })
+        },
+        
+        generatePDF(){
+            this.generateTable(this.order)
+            let transaction = this.order[0];
+            let params = {
+                title : transaction.transaction.status == 'IN' ? 'Receipt Items' : 'Issuing Items',
+                transaction_date : transaction.transaction.picker,
+                faktur : transaction.transaction.faktur_number,
+                supplier : transaction.transaction.supplier,
+                width : ['auto', 200, 200, '*'],
+                remark:transaction.transaction.remark,
+                data : this.table
+            }
+            return receipt(params);
         }
     },
+
      watch: {
         '$route.params.id'() {
             this.fetchOrder()

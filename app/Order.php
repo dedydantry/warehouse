@@ -31,6 +31,7 @@ class Order extends Model
             $array[$key]['transaction_id'] =  $transaction;
             $array[$key]['barang_id'] = $value->id;
             $array[$key]['amount'] = $value->count;
+            $array[$key]['created_at'] = date('Y-m-d H:i:s');
             
             $barang = \App\Barang::findOrFail($value->id);
             if($status == 'IN'){

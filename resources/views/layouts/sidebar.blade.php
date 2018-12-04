@@ -46,10 +46,10 @@
                             <i class="menu-icon fa fa-bullhorn"></i><router-link to="/report/stok">&nbsp; Items Stock</router-link>
                         </li>
                         <li>
-                            <i class="menu-icon fa fa-bullhorn"></i><router-link to="/report/In">&nbsp; Receive</router-link>
+                            <i class="menu-icon fa fa-bullhorn"></i><router-link to="/report/transaction/in">&nbsp; Receive</router-link>
                         </li>
                         <li>
-                            <i class="menu-icon fa fa-bullhorn"></i><router-link to="/report/In">&nbsp; Issue</router-link>
+                            <i class="menu-icon fa fa-bullhorn"></i><router-link to="/report/transaction/out">&nbsp; Issue</router-link>
                         </li>
                     </ul>
                 </li>
