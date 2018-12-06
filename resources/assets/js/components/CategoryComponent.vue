@@ -30,8 +30,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(categories, index) in category"  v-bind:key="index">
-                                            <th scope="row">{{ index+1 }}</th>
+                                        <tr v-for="(categories, index) in barang_paging"  v-bind:key="index">
+                                            <th scope="row">{{ page > 1 ? (page*finish)-10+(index+1) : index+1 }}</th>
                                             <td>{{ categories.category_name }}</td>
                                             <td>
                                                 <button class="btn btn-outline-primary btn-sm" v-on:click="edit(categories)"><i class="fa fa-pencil"></i></button>
@@ -40,6 +40,21 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <paginate
+                                    v-model="page_active"
+                                    :page-count="page_count"
+                                    :page-range="10"
+                                    :margin-pages="2"
+                                    :prev-text="'Prev'"
+                                    :next-text="'Next'"
+                                    :clickHandler="generatePaging"
+                                    :container-class="'pagination'"
+                                    :page-class="'page-item'"
+                                    :page-link-class="'page-link'"
+                                    :prev-link-class="'page-link'"
+                                    :next-link-class="'page-link'"
+                                    >
+                                </paginate>
                             </div>
                         </div>
                     </div>
@@ -51,6 +66,7 @@
 
 <script>
 import Breadcrumbs from './BreadcrumbsComponent.vue'
+import Paginate from 'vuejs-paginate'
 export default {
     data() {
         return{
@@ -58,9 +74,15 @@ export default {
             category_name : '',
             errors : [],
             action : false,
+            page_active:1,
+            page_count :0,
             category :[],
             paging : {},
-            items : {}
+            items : {},
+            barang_paging:[],
+            start : 0,
+            finish:10,
+            page:1
         }
     },
 
@@ -75,7 +97,8 @@ export default {
     },
 
     components:{
-        'breadcrumbs' : Breadcrumbs
+        'breadcrumbs' : Breadcrumbs,
+        'paginate' : Paginate
     },
 
     created(){
@@ -84,10 +107,24 @@ export default {
 
     methods:{
 
+        generatePaging(page){
+            console.log(page)
+            let start = this.start
+            let finish = this.finish
+            this.page = page
+            if(page > 1){
+                start = (finish*page)-10
+                finish = page*finish
+            }
+            this.barang_paging = this.category.slice(start, finish)
+        },
+
         async fetchCategory(base_url) {
            try{
                const category = await axios.get('/category');
-               return this.category = category.data.data
+               this.category = category.data
+               this.page_count = (this.category.length / this.finish)
+               this.barang_paging = this.category.slice(this.start, this.finish)
            } catch(error){
                 console.log(error)
            }
@@ -152,16 +189,6 @@ export default {
             this.category_name = ''
             this.action = false
         },
-
-        makePaging(meta, links){
-            let paging = {
-                current_page : meta.current_page,
-                last_page : meta.last_page,
-                next_page_url : links.next,
-                prev_page_url : links.prev
-            }
-            this.paging = paging
-        }
     }
 }
 </script>

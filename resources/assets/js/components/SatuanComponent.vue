@@ -1,6 +1,6 @@
 <template>
     <div class="clearfix">        
-        <breadcrumbs title="Satuan"></breadcrumbs>
+        <breadcrumbs title="Unit"></breadcrumbs>
         <div class="content">
             <div class="animate fade-in">
                 <div class="row">
@@ -41,6 +41,21 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <paginate
+                                    v-model="page_active"
+                                    :page-count="page_count"
+                                    :page-range="10"
+                                    :margin-pages="2"
+                                    :prev-text="'Prev'"
+                                    :next-text="'Next'"
+                                    :clickHandler="generatePaging"
+                                    :container-class="'pagination'"
+                                    :page-class="'page-item'"
+                                    :page-link-class="'page-link'"
+                                    :prev-link-class="'page-link'"
+                                    :next-link-class="'page-link'"
+                                    >
+                                </paginate>
                             </div>
                         </div>
                     </div>
@@ -52,6 +67,8 @@
 
 <script>
 import Breadcrumbs from './BreadcrumbsComponent.vue'
+import Paginate from 'vuejs-paginate'
+
 export default {
     data(){
         return {
@@ -59,12 +76,19 @@ export default {
             satuan : [],
             action: false,
             errors :[],
-            items : {}
+            items : {},
+            satuan_paging:[],
+            start : 0,
+            finish:10,
+            page:1,
+            page_active:1,
+            page_count :0,
         }
     },
 
     components:{
-        'breadcrumbs' : Breadcrumbs
+        'breadcrumbs' : Breadcrumbs,
+        'paginate' : Paginate
     },
 
     computed:{
@@ -82,11 +106,24 @@ export default {
     },
 
     methods:{
+        generatePaging(page){
+            console.log(page)
+            let start = this.start
+            let finish = this.finish
+            this.page = page
+            if(page > 1){
+                start = (finish*page)-10
+                finish = page*finish
+            }
+            this.satuan_paging = this.satuan.slice(start, finish)
+        },
 
         async fetchSatuan(){
             try {
                 let satuan = await axios.get('/api/satuan')
-                this.satuan = satuan.data.data
+                this.satuan = satuan.data
+                this.page_count = (this.satuan.length / this.finish)
+               this.barang_paging = this.satuan.slice(this.start, this.finish)
             } catch (error) {
                 console.log(error)
             }

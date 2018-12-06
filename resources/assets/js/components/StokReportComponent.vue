@@ -1,6 +1,6 @@
 <template>
     <div class="clearfix">    
-        <breadcrumbs title="Barang"></breadcrumbs>
+        <breadcrumbs title="Report Stock"></breadcrumbs>
         <div class="content">
             <div class="animate fade-in">
                 <div class="row">

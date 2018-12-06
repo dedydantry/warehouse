@@ -25,10 +25,8 @@ const router = new VueRouter({
 })
 
 // global components
-// import Breadcrumbs from './components/BreadcrumbsComponent.vue'
-// Vue.component('Breadcrumbs', Breadcrumbs);
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
 });

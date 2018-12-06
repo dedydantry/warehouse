@@ -17,7 +17,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brand = Brand::paginate(15);
+        $brand = Brand::get();
         return BrandResource::collection($brand);
     }
 

@@ -1,6 +1,6 @@
 <template>
     <div class="clearfix">
-        <breadcrumbs title="Items"></breadcrumbs>
+        <breadcrumbs :title="title"></breadcrumbs>
         <div class="content">
             <div class="animate fade-in">
                 <div class="row">
@@ -26,14 +26,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(barangs, index) in barang" v-bind:key="index">
+                                        <tr v-for="(barangs, index) in barang" v-bind:key="index" :class="[barangs.stok < 6 ? 'table-danger' : '' ]" >
                                             <td>{{ index+1 }}</td>
                                             <td>{{ barangs.part_number }}</td>
                                             <td>{{ barangs.description }}</td>
                                             <td>{{ barangs.category.category_name }}</td>
                                             <td>{{ barangs.brand.brand_name }}</td>
                                             <td>{{ barangs.satuan.satuan_name }}</td>
-                                            <td>{{ barangs.stok }}</td>
+                                            <td><span class="count">{{ barangs.stok }}</span></td>
                                             <td>{{ 'Rp '+ barangs.price }}</td>
                                             <td>
                                                 <button class="btn btn-outline-primary btn-sm" v-on:click="edit(barangs)"><i class="fa fa-pencil"></i></button>
@@ -56,12 +56,13 @@ import Breadcrumbs from './BreadcrumbsComponent.vue'
 export default {
     data(){
         return {
-            barang : []
+            barang : [],
+            title:"Items",
         }
     },
 
     components:{
-        'breadcrumbs' : Breadcrumbs
+        'breadcrumbs' : Breadcrumbs,
     },
 
     created(){
@@ -95,6 +96,6 @@ export default {
                 }
             }
         }
-    }
+    },
 }
 </script>

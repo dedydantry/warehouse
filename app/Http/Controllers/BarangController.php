@@ -17,7 +17,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        $brand = Barang::with(['categories', 'brands', 'satuans'])->paginate(15);
+        $brand = Barang::with(['categories', 'brands', 'satuans'])->get();
         return BarangResource::collection($brand);
     }
 
@@ -35,6 +35,11 @@ class BarangController extends Controller
         ];
 
         return response()->json($data);
+    }
+
+    public function notifications(){
+        $barang = Barang::minusstock()->limit(10)->get();
+        if($barang) return BarangResource::collection($barang);;
     }
 
     /**

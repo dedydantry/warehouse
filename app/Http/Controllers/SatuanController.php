@@ -17,7 +17,7 @@ class SatuanController extends Controller
      */
     public function index()
     {
-        $satuan = Satuan::paginate(15);
+        $satuan = Satuan::get();
         return SatuanResource::collection($satuan);
     }
 

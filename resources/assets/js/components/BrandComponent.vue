@@ -41,6 +41,21 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                 <paginate
+                                    v-model="page_active"
+                                    :page-count="page_count"
+                                    :page-range="10"
+                                    :margin-pages="2"
+                                    :prev-text="'Prev'"
+                                    :next-text="'Next'"
+                                    :clickHandler="generatePaging"
+                                    :container-class="'pagination'"
+                                    :page-class="'page-item'"
+                                    :page-link-class="'page-link'"
+                                    :prev-link-class="'page-link'"
+                                    :next-link-class="'page-link'"
+                                    >
+                                </paginate>
                             </div>
                         </div>
                     </div>
@@ -52,6 +67,8 @@
 
 <script>
 import Breadcrumbs from './BreadcrumbsComponent.vue'
+import Paginate from 'vuejs-paginate'
+
 export default {
     data(){
         return {
@@ -59,12 +76,21 @@ export default {
             brand : [],
             action: false,
             errors :[],
-            items : {}
+            items : {},
+            page_active:1,
+            page_count :0,
+            start : 0,
+            finish:10,
+            page:1,
+            brand_paging:[],
+            page_active:1,
+            page_count :0,
         }
     },
 
     components:{
-        'breadcrumbs' : Breadcrumbs
+        'breadcrumbs' : Breadcrumbs,
+        'paginate' : Paginate
     },
 
     computed:{
@@ -83,10 +109,23 @@ export default {
 
     methods:{
 
+        generatePaging(page){
+            let start = this.start
+            let finish = this.finish
+            this.page = page
+            if(page > 1){
+                start = (finish*page)-10
+                finish = page*finish
+            }
+            this.brand_paging = this.brand.slice(start, finish)
+        },
+
         async fetchBrand(){
             try {
                 let brand = await axios.get('/api/brand')
-                this.brand = brand.data.data
+                this.brand = brand.data
+                this.page_count =(this.brand.length / this.finish)
+                this.brand_paging = this.brand.slice(this.start, this.finish)
             } catch (error) {
                 console.log(error)
             }

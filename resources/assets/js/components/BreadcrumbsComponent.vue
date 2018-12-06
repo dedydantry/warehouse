@@ -9,17 +9,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-8">
+                <!-- <div class="col-sm-8">
                     <div class="page-header float-right">
                         <div class="page-title">
                             <ol class="breadcrumb text-right">
-                                <li><a href="#">Dashboard</a></li>
+                                <li><router-link :to="{name : 'home'}"><i class="menu-icon fa fa-laptop"></i>Dashboard</router-link></li>
                                 <li><a href="#">Joss</a></li>
                                 <li class="active">Basic</li>
                             </ol>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

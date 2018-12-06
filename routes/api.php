@@ -46,3 +46,4 @@ Route::delete('order/{id}', 'OrderController@destroy');
 
 Route::get('report', 'ReportController@destroy');
 Route::get('report/transaction/{status}', 'ReportController@transaction');
+Route::get('notif', 'BarangController@notifications');

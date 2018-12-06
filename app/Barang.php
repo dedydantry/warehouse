@@ -37,8 +37,13 @@ class Barang extends Model
         return $this->hasMany('App\Order',  'barang_id');
     }
 
-    // public function transaction()
-    // {
-    //     return $this->hasManyThrough('App\Transaction', 'App\Order');
-    // }
+    public function scopeOverstock($query)
+    {
+        return $query->where('stok', '>', 100);
+    }
+
+    public function scopeMinusstock($query)
+    {
+        return $query->where('stok', '<', 5);
+    }
 }

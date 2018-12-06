@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "pdfmake": "^0.1.39",
-        "vue-router": "^3.0.1"
+        "vue-router": "^3.0.1",
+        "vuejs-paginate": "^2.0.1"
     }
 }
