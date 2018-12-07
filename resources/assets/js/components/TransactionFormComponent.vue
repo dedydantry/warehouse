@@ -59,8 +59,8 @@
                                     <tbody>
                                         <tr v-for="(value, index) in array_barang" :key="index">
                                             <td>{{ value.part_number ? value.part_number : value.barang.part_number }}</td>
-                                            <td>{{ value.category ?  value.category.category_name : value.barang.category.category_name }}</td>
-                                            <td>{{ value.count ? value.count : value.amount }} {{ value.satuan ? value.satuan.satuan_name : value.barang.satuan.satuan_name }}</td>
+                                            <td>{{ value.categories ?  value.categories.category_name : value.barang.category.category_name }}</td>
+                                            <td>{{ value.count ? value.count : value.amount }} {{ value.satuans ? value.satuans.satuan_name : value.barang.satuan.satuan_name }}</td>
                                             <td><button class="btn btn-link" v-on:click="destroy(value)"><i class="fa fa-trash"></i></button></td>
                                         </tr>
                                     </tbody>
@@ -79,7 +79,6 @@
 </template>
 
 <script>
-import Breadcrumbs from './BreadcrumbsComponent.vue'
 export default {
     data(){
         return{
@@ -91,10 +90,6 @@ export default {
             order_transaction:[],
             update_post :[]
         }
-    },
-
-    components:{
-        'breadcrumbs' : Breadcrumbs
     },
 
     computed:{
@@ -121,8 +116,8 @@ export default {
 
         async fetchBarang(){
             try {
-                let barang = await axios.get('api/barang');
-                this.barang = barang.data.data
+                let barang = await axios.get('api/barang?all=true');
+                this.barang = barang.data
             } catch (error) {
                 console.log(error)
             }

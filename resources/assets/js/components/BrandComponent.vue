@@ -66,9 +66,6 @@
 </template>
 
 <script>
-import Breadcrumbs from './BreadcrumbsComponent.vue'
-import Paginate from 'vuejs-paginate'
-
 export default {
     data(){
         return {
@@ -86,11 +83,6 @@ export default {
             page_active:1,
             page_count :0,
         }
-    },
-
-    components:{
-        'breadcrumbs' : Breadcrumbs,
-        'paginate' : Paginate
     },
 
     computed:{

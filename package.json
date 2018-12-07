@@ -19,6 +19,7 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
+        "laravel-vue-pagination": "^2.2.0",
         "pdfmake": "^0.1.39",
         "vue-router": "^3.0.1",
         "vuejs-paginate": "^2.0.1"

@@ -68,7 +68,6 @@
 </template>
 
 <script>
-import Breadcrumbs from './BreadcrumbsComponent.vue'
 import table from '../helper/receipt.js';
 import receipt from '../helper/receipt.js';
 
@@ -81,8 +80,6 @@ export default {
             ]
         }
     },
-
-    components:{Breadcrumbs},
 
     computed:{
         isTitle(){

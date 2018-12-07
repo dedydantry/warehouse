@@ -65,8 +65,6 @@
 </template>
 
 <script>
-import Breadcrumbs from './BreadcrumbsComponent.vue'
-import Paginate from 'vuejs-paginate'
 export default {
     data() {
         return{
@@ -94,11 +92,6 @@ export default {
         actionName(){
             return this.action ? 'Update' : 'Save'
         }
-    },
-
-    components:{
-        'breadcrumbs' : Breadcrumbs,
-        'paginate' : Paginate
     },
 
     created(){

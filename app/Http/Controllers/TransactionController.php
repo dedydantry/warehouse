@@ -19,9 +19,8 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $status = strtoupper($request->get('status'));
-        $transaction = Transaction::where('status', $status)->get();
+        $transaction = Transaction::where('status', $status)->paginate(15);
         return TransactionResource::collection($transaction);
-        // return response()->json($transaction);
 
     }
 

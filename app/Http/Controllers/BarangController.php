@@ -15,10 +15,17 @@ class BarangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $brand = Barang::with(['categories', 'brands', 'satuans'])->get();
-        return BarangResource::collection($brand);
+        $brand = Barang::with(['categories', 'brands', 'satuans'])->orderBy('id', 'desc');
+
+        if($request->get('all')) {
+            $brand = $brand->get();
+            return response()->json($brand);
+        } else {
+            $brand = $brand->paginate(1);
+            return BarangResource::collection($brand);
+        }
     }
 
     /**
@@ -35,11 +42,6 @@ class BarangController extends Controller
         ];
 
         return response()->json($data);
-    }
-
-    public function notifications(){
-        $barang = Barang::minusstock()->limit(10)->get();
-        if($barang) return BarangResource::collection($barang);;
     }
 
     /**

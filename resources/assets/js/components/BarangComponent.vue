@@ -14,7 +14,7 @@
                                 <table class="table">
                                         <thead class="thead-dark">
                                             <tr>
-                                            <th scope="col">#</th>
+                                            <th scope="col">ID</th>
                                             <th scope="col">Part Number</th>
                                             <th scope="col">Desc</th>
                                             <th scope="col">Category</th>
@@ -26,8 +26,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(barangs, index) in barang" v-bind:key="index" :class="[barangs.stok < 6 ? 'table-danger' : '' ]" >
-                                            <td>{{ index+1 }}</td>
+                                        <tr v-for="(barangs, index) in barang.data" v-bind:key="index" :class="[barangs.stok < 6 ? 'table-danger' : '' ]" >
+                                            <td>{{ barangs.id }}</td>
                                             <td>{{ barangs.part_number }}</td>
                                             <td>{{ barangs.description }}</td>
                                             <td>{{ barangs.category.category_name }}</td>
@@ -42,6 +42,11 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                    <pagination 
+                                        :data="barang"
+                                        @pagination-change-page="getResults"
+                                        :limit="limit">
+                                    </pagination>
                             </div>
                         </div>
                     </div>
@@ -52,34 +57,30 @@
 </template>
 
 <script>
-import Breadcrumbs from './BreadcrumbsComponent.vue'
 export default {
     data(){
         return {
-            barang : [],
+            barang : {},
             title:"Items",
+            limit:2
         }
     },
 
-    components:{
-        'breadcrumbs' : Breadcrumbs,
-    },
 
     created(){
-        this.fetchBarang()
+        // this.fetchBarang()
+        this.getResults();
     },
 
     methods:{
-        
-        async fetchBarang(){
-            try {
-                let barang = await axios.get('/api/barang');
-                this.barang = barang.data.data
-                console.log(this.barang)
+        async getResults(page = 1) {
+			try {
+                let result = await axios.get('/api/barang?page=' + page)
+			    this.barang = result.data
             } catch (error) {
                 console.log(error)
             }
-        },
+		},
 
         async edit(items){
             return this.$router.push('barang/edit/'+items.id) ;
@@ -95,7 +96,7 @@ export default {
                     console.log(error)
                 }
             }
-        }
+        },
     },
 }
 </script>

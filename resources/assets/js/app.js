@@ -19,6 +19,13 @@ import VueRouter from 'vue-router';
 import { routes } from './routes'
 Vue.use(VueRouter);
 
+//component
+import Paginate from 'vuejs-paginate'
+import Breadcrumbs from './components/BreadcrumbsComponent.vue'
+Vue.component('Breadcrumbs', Breadcrumbs)
+Vue.component('paginate', Paginate)
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 const router = new VueRouter({
     // mode : 'history',
     routes

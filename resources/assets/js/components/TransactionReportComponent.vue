@@ -53,7 +53,6 @@
 </template>
 
 <script>
-import Breadcrumbs from './BreadcrumbsComponent.vue'
 import table from '../helper/table.js';
 
 export default {
@@ -72,10 +71,6 @@ export default {
             periode : ''
             
         }
-    },
-
-    components:{
-        'breadcrumbs' : Breadcrumbs
     },
 
     computed : {

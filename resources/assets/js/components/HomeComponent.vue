@@ -21,15 +21,11 @@
 </template>
 
 <script>
-import Breadcrumbs from './BreadcrumbsComponent.vue'
 export default {
     data(){
         return{
             message : 'hello Home'
         }
-    },
-    components:{
-        'breadcrumbs' : Breadcrumbs
-    },
+    }
 }
 </script>

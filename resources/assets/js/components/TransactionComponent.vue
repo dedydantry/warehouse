@@ -35,6 +35,20 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <ul class="pagination">
+                                    <li v-if="page > 1" @click="prevPage()" class="page-item pagination-prev-nav">
+                                        <a href="javascript:;" aria-label="Previous" class="page-link"><span aria-hidden="true">«</span><span class="sr-only">Previous</span></a>
+                                    
+                                    </li>
+                                    <li v-for="n in meta.total" :key="n" :class="[page == n ? 'page-item active' : 'page-item']">
+                                        <a v-if="meta.total > limit && n==2" href="javascript:;" class="page-link">...</a>
+                                        <a v-else href="javascript:;" class="page-link" @click="makePagination(n)">{{n}}</a>
+                                    </li>
+                                    <li v-if="page < 2" class="page-item pagination-next-nav">
+                                        <a href="javascript:;" @click="nextPage()" aria-label="Next" class="page-link">
+                                            <span aria-hidden="true">»</span><span class="sr-only">Next</span></a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -45,16 +59,17 @@
 </template>
 
 <script>
-import Breadcrumbs from './BreadcrumbsComponent.vue'
 export default {
     data(){
         return{
             title : '',
-            transaction : []
+            transaction : [],
+            links : {},
+            meta:{},
+            page:1,
+            limit:5
         }
     },
-    components : {Breadcrumbs},
-
 
     computed : {
         isTitle(){
@@ -64,27 +79,39 @@ export default {
 
     mounted(){
         if(this.$route.params.status == 'in'){
-             this.fetchTransaction()
+             this.makePagination()
         } else {
-            this.fetchTransaction()
+            this.makePagination()
         }
     },
 
     methods:{
 
-        async fetchTransaction(){
-            try {
-                let datas = await axios.get('api/transaction?status='+this.$route.params.status);
-                this.transaction = datas.data
+        async makePagination(page = 1){
+            this.page = page
+             try {
+                let datas = await axios.get('api/transaction?status='+this.$route.params.status+'&page='+page);
+                this.transaction = datas.data.data
+                this.links = datas.data.links,
+                this.meta = datas.data.meta
+                return
             } catch (error) {
                 console.log(error)
             }
+        },
+
+        nextPage(){
+            return this.makePagination(this.page+1)
+        },
+
+        prevPage(){
+            return this.makePagination(this.page-1)
         }
     },
 
     watch: {
         '$route.params.status'() {
-            this.fetchTransaction()
+            this.makePagination()
         }
     }
 }

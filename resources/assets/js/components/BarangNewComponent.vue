@@ -18,7 +18,7 @@
                                         <span v-if="attemptSubmit && invalidPart" class="invalid-feedback">{{ errors.part_number }}</span>
                                     </div>
                                     <div class="form-group">
-                                        <label for="description" class=" form-control-label">Desc :</label>
+                                        <label for="description" class=" form-control-label">Name :</label>
                                         <input type="text" v-model="description" name="description" :class="[invalidDesc && attemptSubmit ? 'is-invalid form-control' : 'form-control']">
                                         <span v-if="attemptSubmit && invalidDesc" class="invalid-feedback">{{ errors.description }}</span>
                                     </div>
@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import Breadcrumbs from './BreadcrumbsComponent.vue'
 export default {
     data(){
         return{
@@ -100,10 +99,6 @@ export default {
                 "number" : "The field must be number",
             }
         }
-    },
-
-    components:{
-        'breadcrumbs' : Breadcrumbs
     },
 
     created(){
