@@ -23,7 +23,7 @@ class BarangController extends Controller
             $brand = $brand->get();
             return response()->json($brand);
         } else {
-            $brand = $brand->paginate(1);
+            $brand = $brand->paginate(15);
             return BarangResource::collection($brand);
         }
     }

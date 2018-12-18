@@ -27,9 +27,9 @@
                                             <td>{{ barangs.id }}</td>
                                             <td>{{ barangs.part_number }}</td>
                                             <td>{{ barangs.description }}</td>
-                                            <td>{{ barangs.categories.category_name }}</td>
-                                            <td>{{ barangs.brands.brand_name }}</td>
-                                            <td>{{ barangs.stok }} {{ barangs.satuans.satuan_name }}</td>
+                                            <td>{{ barangs.category.category_name }}</td>
+                                            <td>{{ barangs.brand.brand_name }}</td>
+                                            <td>{{ barangs.stok }} {{ barangs.satuan.satuan_name }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -83,9 +83,9 @@ export default {
                     {text: index+1, fontSize:9},
                     {text : value.part_number, fontSize:9},
                     {text : value.description, fontSize:9},
-                    {text :  value.categories.category_name, fontSize:9},
-                    {text :value.brands.brand_name, fontSize:9},
-                    {text:value.stok+' '+value.satuans.satuan_name, fontSize:9},
+                    {text :  value.category.category_name, fontSize:9},
+                    {text :value.brand.brand_name, fontSize:9},
+                    {text:value.stok+' '+value.satuan.satuan_name, fontSize:9},
                 ]
                 this.table.push(res)
            })

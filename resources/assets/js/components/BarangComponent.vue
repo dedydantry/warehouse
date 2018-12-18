@@ -19,7 +19,6 @@
                                             <th scope="col">Desc</th>
                                             <th scope="col">Category</th>
                                             <th scope="col">Brand</th>
-                                            <th scope="col">Stn</th>
                                             <th scope="col">Stok</th>
                                             <th scope="col">Price</th>
                                             <th scope="col"></th>
@@ -32,8 +31,7 @@
                                             <td>{{ barangs.description }}</td>
                                             <td>{{ barangs.category.category_name }}</td>
                                             <td>{{ barangs.brand.brand_name }}</td>
-                                            <td>{{ barangs.satuan.satuan_name }}</td>
-                                            <td><span class="count">{{ barangs.stok }}</span></td>
+                                            <td><span class="count">{{ barangs.stok+' '+barangs.satuan.satuan_name}}</span></td>
                                             <td>{{ 'Rp '+ barangs.price }}</td>
                                             <td>
                                                 <button class="btn btn-outline-primary btn-sm" v-on:click="edit(barangs)"><i class="fa fa-pencil"></i></button>
